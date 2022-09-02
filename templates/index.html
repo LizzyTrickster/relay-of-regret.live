@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>Relay of Regret</title>
+{#    <meta http-equiv="refresh" content="10">#}
+  </head>
+  <body>
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <h1>Relay of Regret 2</h1>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid text-center">
+      <div class="row">
+          <h2>Today's featured charity</h2>
+      </div>
+      <div class="row">
+        <div class="col">
+          {% if current_charity %}<a href="/{{ current_charity['url'] }}"><img alt="{{ current_charity['url'] }}" src="{{ current_charity['img'] }}"></a>{% else %}The relay has not yet begun or is over{% endif %}
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid text-center">
+      <div class="row">
+        <h4>Current relay runner: <br>
+            {% if current_streamer %}
+                <a href="https://twitch.tv/{{ current_streamer }}">{{ current_streamer }}</a>
+            {% else %}
+                <p>The relay has not yet begun or is over</p>
+            {% endif %}
+        </h4>
+      </div>
+      <div class="row">
+        <div class="col">
+          <!--<img src="https://placekitten.com/320/180">-->
+            <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true" height="360" width="640"></iframe>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container text-center">
+      <div class="row">
+        <h3>The other charities we're supporting this week!</h3>
+      </div>
+      <div class="row row-cols-lg-4 row-cols-md-2 gx-2">
+          {% for charity in charities %}
+              <div class="col p-1 px-1"><a href="/{{ charity.url }}"><img src="{{ charity.img }}"></a></div>
+          {% endfor %}
+      </div>
+    </div>
+    <br>
+    <div class="container text-center">
+      <div class="row">
+        <h3>Relay schedule</h3>
+      </div>
+      <div class="row">
+<!--         <h5>table or something goes here...</h5> -->
+      </div>
+      <div class="row border bg-light">
+        <div class="col">Time Slot</div>
+        <div class="col">Streamer</div>
+      </div>
+        {% for slot, streamer, spann in timeslots %}
+      <div class="row border {% if slot < now < slot + timedelta(hours=12) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">
+        <div class="col">
+        <span id="timetable-slot" timeslot="{{ slot }}" name="timeslot" timespan="{{ spann }}">Starts at {{ slot }}</span>
+        </div>
+        <div class="col"><a href="https://twitch.tv/{{ streamer }}">Twitch.tv/{{ streamer }}</a></div>
+      </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <h3>About The Relay of Regret:</h3>
+                <p>The Relay of Regret is a relay Stream-A-Thon that jumps from community to community to help raise money for charity.<br>
+                    Started in 2021, the goal is to raise as much money as possible for good and bring communities together for an amazing week of content and fun.<br>
+                    Last Year, we raised over £10,000 for 2 charities.<br><br>
+                    This year, we're going <b>bigger</b>.<br>
+                    We're going <b>harder</b>.<br>
+                    We're pushing for more as well. More communities. More charities. More variety.<br><br>
+                    It's going to be a long week.<br><br>
+                    You can donate to any charity at any time, but each day you will see a FEATURED charity that we will be promoting.<br>
+                    Allowing you to back the charities you care about most, while also giving each charity their own time to shine.<br>
+                    All the money goes direct to the charities via Tiltify or Extra Life. We do not see a penny.<br>
+                    We do not even touch the finances in any regard, we are a team using the fundraising websites to get the charities the money they need.<br>
+                    <br>
+                <h5><u>Who are the Relayers?</u></h5><br>
+
+                    BardicRJ, WoodyWoodpie, SledgeLP, MerleKoz, Moss, FeatheredFlint, HeartWood, Wishdream, Tygre, Silvixen, MegasArts, LeonFoxy, Nanukk, Kaideart, NateyBeak
+                    <br><br>
+                    There are a lot more taking part in raising money but these are the streamers involved in the Relay itself.
+
+
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br><br>
+    <div class="container-fluid text-center">
+      <div class="row">
+        <div class="col">
+            <hr>
+            Site generated at <span id="beans">{{ now }}</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function pad(x){ if(x < 10) return "0"+x; return x;}
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      const d = new Date();
+      document.getElementById("beans").innerHTML = d.toString();
+
+      function getFormattedDateString(date) {
+//         var date = new Date(string);
+        return days[date.getDay()] + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+      }
+      function getTimeSlot(start_time, timeframe){
+        var date = new Date(start_time);
+        var f = getFormattedDateString(date);
+        date.setHours(parseInt(date.getHours())+parseInt(timeframe));
+        var s = getFormattedDateString(date);
+        return f + " - " + s;
+      }
+
+//       document.getElementById("Slot1Time").innerHTML = getFormattedDateString("2022/09/02 17:00 GMT") + " - " + getFormattedDateString("2022/09/03 05:00 GMT");
+      const slots = document.getElementsByName("timeslot");
+      for (let e=0; slots[e]; e++) {
+          slots[e].innerText = getTimeSlot(slots[e].getAttribute("timeslot"), slots[e].getAttribute("timespan"));
+      }
+
+    </script>
+  </body>
+</html>
