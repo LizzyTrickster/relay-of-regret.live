@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <title>Relay of Regret</title>
-{#    <meta http-equiv="refresh" content="10">#}
   </head>
   <body>
     <div class="container text-center">
@@ -38,7 +37,6 @@
       </div>
       <div class="row">
         <div class="col">
-          <!--<img src="https://placekitten.com/320/180">-->
             <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true" height="360" width="640"></iframe>
         </div>
       </div>
@@ -60,7 +58,6 @@
         <h3>Relay schedule</h3>
       </div>
       <div class="row">
-<!--         <h5>table or something goes here...</h5> -->
       </div>
       <div class="row border bg-light">
         <div class="col">Time Slot</div>
@@ -91,25 +88,24 @@
                     Allowing you to back the charities you care about most, while also giving each charity their own time to shine.<br>
                     All the money goes direct to the charities via Tiltify or Extra Life. We do not see a penny.<br>
                     We do not even touch the finances in any regard, we are a team using the fundraising websites to get the charities the money they need.<br>
+                </p>
                     <br>
                 <h5><u>Who are the Relayers?</u></h5><br>
-
+                <p>
                     BardicRJ, WoodyWoodpie, SledgeLP, MerleKoz, Moss, FeatheredFlint, HeartWood, Wishdream, Tygre, Silvixen, MegasArts, LeonFoxy, Nanukk, Kaideart, NateyBeak
                     <br><br>
                     There are a lot more taking part in raising money but these are the streamers involved in the Relay itself.
-
-
                 </p>
             </div>
         </div>
     </div>
 
-    <br><br><br><br><br>
+    <br><br>
     <div class="container-fluid text-center">
       <div class="row">
         <div class="col">
             <hr>
-            Site generated at <span id="beans">{{ now }}</span>
+            Site generated at <span id="gentime">{{ now }}</span>
         </div>
       </div>
     </div>
@@ -117,11 +113,10 @@
     <script>
       function pad(x){ if(x < 10) return "0"+x; return x;}
       const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-      const d = new Date();
-      document.getElementById("beans").innerHTML = d.toString();
+      const d = new Date("{{ now }}");
+      document.getElementById("gentime").innerHTML = d.toString();
 
       function getFormattedDateString(date) {
-//         var date = new Date(string);
         return days[date.getDay()] + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
       }
       function getTimeSlot(start_time, timeframe){
@@ -132,12 +127,10 @@
         return f + " - " + s;
       }
 
-//       document.getElementById("Slot1Time").innerHTML = getFormattedDateString("2022/09/02 17:00 GMT") + " - " + getFormattedDateString("2022/09/03 05:00 GMT");
       const slots = document.getElementsByName("timeslot");
       for (let e=0; slots[e]; e++) {
           slots[e].innerText = getTimeSlot(slots[e].getAttribute("timeslot"), slots[e].getAttribute("timespan"));
       }
-
     </script>
   </body>
 </html>
