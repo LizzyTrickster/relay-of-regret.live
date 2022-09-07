@@ -64,7 +64,7 @@
         <div class="col">Streamer</div>
       </div>
         {% for slot, streamer, spann in timeslots %}
-      <div class="row border {% if slot < now < slot + timedelta(hours=12) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">
+      <div class="row border {% if slot < now < slot + timedelta(hours=spann) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">
         <div class="col">
         <span id="timetable-slot" timeslot="{{ slot }}" name="timeslot" timespan="{{ spann }}">Starts at {{ slot }}</span>
         </div>
