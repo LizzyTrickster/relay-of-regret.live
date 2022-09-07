@@ -44,8 +44,8 @@ def hello():
     ]
     current_streamer = None
     current_charity = None
-    for startdate, streamer, _ in timeslots:
-        if startdate < now() < startdate+timedelta(hours=12):
+    for startdate, streamer, slot_hours in timeslots:
+        if startdate < now() < startdate+timedelta(hours=slot_hours):
             current_streamer = streamer
             break
     for charity in charity_list:
