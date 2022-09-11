@@ -15,36 +15,46 @@
     </div>
     <br>
     <div class="container-fluid text-center">
-      <div class="row">
-          <h2>Today's featured charity</h2>
-      </div>
-      <div class="row">
-        <div class="col">
-          {% if current_charity %}<a href="/{{ current_charity['url'] }}"><img alt="{{ current_charity['url'] }}" src="{{ current_charity['img'] }}"></a>{% else %}The relay has not yet begun or is over{% endif %}
+        <div class="row">
+            <h2>The Relay of Regret 2 has concluded!</h2>
+            <br>
+            <h4>What a week that was!<br>
+                We managed to raise a grand total of <b>$42,294.93</b> across the 8 charities.<br>
+                Thank you to everyone who donated, your support has helped the charities go on to support even more people.
+                <br><br>
+                Relay of Regret 3 next year, anyone? :)
+            </h4>
         </div>
-      </div>
-    </div>
-    <br>
-    <div class="container-fluid text-center">
-      <div class="row">
-        <h4>Current relay runner: <br>
-            {% if current_streamer %}
-                <a href="https://twitch.tv/{{ current_streamer }}">{{ current_streamer }}</a>
-            {% else %}
-                <p>The relay has not yet begun or is over</p>
-            {% endif %}
-        </h4>
-      </div>
-      <div class="row">
-        <div class="col">
-            <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true" height="360" width="640"></iframe>
-        </div>
-      </div>
+{#      <div class="row">#}
+{#          <h2>Today's featured charity</h2>#}
+{#      </div>#}
+{#      <div class="row">#}
+{#        <div class="col">#}
+{#          {% if current_charity %}<a href="/{{ current_charity['url'] }}"><img alt="{{ current_charity['url'] }}" src="{{ current_charity['img'] }}"></a>{% else %}The relay has not yet begun or is over{% endif %}#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#    <br>#}
+{#    <div class="container-fluid text-center">#}
+{#      <div class="row">#}
+{#        <h4>Current relay runner: <br>#}
+{#            {% if current_streamer %}#}
+{#                <a href="https://twitch.tv/{{ current_streamer }}">{{ current_streamer }}</a>#}
+{#            {% else %}#}
+{#                <p>The relay has not yet begun or is over</p>#}
+{#            {% endif %}#}
+{#        </h4>#}
+{#      </div>#}
+{#      <div class="row">#}
+{#        <div class="col">#}
+{#            <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true" height="360" width="640"></iframe>#}
+{#        </div>#}
+{#      </div>#}
     </div>
     <br>
     <div class="container text-center">
       <div class="row">
-        <h3>The other charities we're supporting this week!</h3>
+        <h3>The charities we supported during the relay!</h3>
       </div>
       <div class="row row-cols-lg-4 row-cols-md-2 gx-2">
           {% for charity in charities %}
@@ -55,7 +65,7 @@
     <br>
     <div class="container text-center">
       <div class="row">
-        <h3>Relay schedule</h3>
+        <h3>The Main Runners of the Relay</h3>
       </div>
       <div class="row">
       </div>
@@ -64,9 +74,10 @@
         <div class="col">Streamer</div>
       </div>
         {% for slot, streamer, spann in timeslots %}
-      <div class="row border {% if slot < now < slot + timedelta(hours=spann) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">
+{#      <div class="row border {% if slot < now < slot + timedelta(hours=spann) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">#}
+      <div class="row border">
         <div class="col">
-        <span id="timetable-slot" timeslot="{{ slot }}" name="timeslot" timespan="{{ spann }}">Starts at {{ slot }}</span>
+        <span id="timetable-slot" timeslot="{{ slot }}" name="timeslot" timespan="{{ spann }}">Started at {{ slot }}</span>
         </div>
         <div class="col"><a href="https://twitch.tv/{{ streamer }}">Twitch.tv/{{ streamer }}</a></div>
       </div>
@@ -115,13 +126,30 @@
     </div>
 
     <script>
+        function ordinal_suffix_of(i) {
+            var j = i % 10,
+            k = i % 100;
+            if (j == 1 && k != 11) {
+                return i + "st";
+            }
+            if (j == 2 && k != 12) {
+                return i + "nd";
+            }
+            if (j == 3 && k != 13) {
+                return i + "rd";
+            }
+            return i + "th";
+        }
+
       function pad(x){ if(x < 10) return "0"+x; return x;}
       const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        const months = ["Jan", "Feb", "Mar", "April", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
       const d = new Date("{{ now }}");
       document.getElementById("gentime").innerHTML = d.toString();
 
       function getFormattedDateString(date) {
-        return days[date.getDay()] + ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+          var day_and_month = ordinal_suffix_of(date.getDate())+" "+months[date.getMonth()]+" "+date.getFullYear()
+        return days[date.getDay()] + ' ('+day_and_month+') ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
       }
       function getTimeSlot(start_time, timeframe){
         var date = new Date(start_time);

@@ -12,14 +12,14 @@ now = functools.partial(datetime.now, tz=timezone.utc)
 def hello():
     start_date = datetime.fromtimestamp(1662138000, tz=timezone.utc)
     charity_list = [
-        dict(img="https://relay-of-regret.live/static/trans-lifeline.png", url="trans-lifeline", slot=start_date+timedelta(days=4)),
-        dict(img="https://relay-of-regret.live/static/acon.png", url="acon", slot=start_date+timedelta(days=2)),
-        dict(img="https://relay-of-regret.live/static/euro-pride.png", url="europride", slot=start_date+timedelta(days=6)),
-        dict(img="https://relay-of-regret.live/static/special-effect.png", url="special-effect", slot=start_date+timedelta(days=7)),
-        dict(img="https://relay-of-regret.live/static/mermaids.png", url="mermaids", slot=start_date+timedelta(days=5)),
-        dict(img="https://relay-of-regret.live/static/rescue.png", url="rescue.org", slot=start_date+timedelta(days=1)),
-        dict(img="https://relay-of-regret.live/static/nqapia.png", url="nqapia", slot=start_date+timedelta(days=3)),
-        dict(img="https://relay-of-regret.live/static/op-sun-kid.png", url="op-sun-kid", slot=start_date),
+        dict(img="https://relay-of-regret.live/static/trans-lifeline.png", url="2022-trans-lifeline", slot=start_date+timedelta(days=4)),
+        dict(img="https://relay-of-regret.live/static/acon.png", url="2022-acon", slot=start_date+timedelta(days=2)),
+        dict(img="https://relay-of-regret.live/static/euro-pride.png", url="2022-europride", slot=start_date+timedelta(days=6)),
+        dict(img="https://relay-of-regret.live/static/special-effect.png", url="2022-special-effect", slot=start_date+timedelta(days=7)),
+        dict(img="https://relay-of-regret.live/static/mermaids.png", url="2022-mermaids", slot=start_date+timedelta(days=5)),
+        dict(img="https://relay-of-regret.live/static/rescue.png", url="2022-rescue.org", slot=start_date+timedelta(days=1)),
+        dict(img="https://relay-of-regret.live/static/nqapia.png", url="2022-nqapia", slot=start_date+timedelta(days=3)),
+        dict(img="https://relay-of-regret.live/static/op-sun-kid.png", url="2022-op-sun-kid", slot=start_date),
     ]
     timeslots = [
         (start_date, "BardicRJ", 12),
