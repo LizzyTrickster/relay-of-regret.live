@@ -3,114 +3,51 @@
   <head>
     <meta charset="utf-8">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <title>Relay of Regret</title>
+    <title>Relay of Regret - 2023</title>
   </head>
   <body>
     <div class="container text-center">
       <div class="row">
         <div class="col">
-          <h1>Relay of Regret 2</h1>
+          <h1>Relay of Regret 2023</h1>
         </div>
       </div>
     </div>
     <br>
     <div class="container-fluid text-center">
         <div class="row">
-            <h2>The Relay of Regret 2 has concluded!</h2>
+            <h2>We're at it again!<br><span id="kickoff">Friday August 18 2023 17:00:00 GMT+0000</span></h2>
             <br>
-            <h4>What a week that was!<br>
-                We managed to raise a grand total of <b>$42,294.93</b> across the 8 charities.<br>
-                Thank you to everyone who donated, your support has helped the charities go on to support even more people.
-                <br><br>
-                Relay of Regret 3 next year, anyone? :)
-            </h4>
+            <h3>Set your clocks!</h3>
         </div>
-{#      <div class="row">#}
-{#          <h2>Today's featured charity</h2>#}
-{#      </div>#}
-{#      <div class="row">#}
-{#        <div class="col">#}
-{#          {% if current_charity %}<a href="/{{ current_charity['url'] }}"><img alt="{{ current_charity['url'] }}" src="{{ current_charity['img'] }}"></a>{% else %}The relay has not yet begun or is over{% endif %}#}
-{#        </div>#}
-{#      </div>#}
-{#    </div>#}
-{#    <br>#}
-{#    <div class="container-fluid text-center">#}
-{#      <div class="row">#}
-{#        <h4>Current relay runner: <br>#}
-{#            {% if current_streamer %}#}
-{#                <a href="https://twitch.tv/{{ current_streamer }}">{{ current_streamer }}</a>#}
-{#            {% else %}#}
-{#                <p>The relay has not yet begun or is over</p>#}
-{#            {% endif %}#}
-{#        </h4>#}
-{#      </div>#}
-{#      <div class="row">#}
-{#        <div class="col">#}
-{#            <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true" height="360" width="640"></iframe>#}
-{#        </div>#}
-{#      </div>#}
     </div>
     <br>
-    <div class="container text-center">
-      <div class="row">
-        <h3>The charities we supported during the relay!</h3>
-      </div>
-      <div class="row row-cols-lg-4 row-cols-md-2 gx-2">
-          {% for charity in charities %}
-              <div class="col p-1 px-1"><a href="/{{ charity.url }}"><img src="{{ charity.img }}"></a></div>
-          {% endfor %}
-      </div>
-    </div>
-    <br>
-    <div class="container text-center">
-      <div class="row">
-        <h3>The Main Runners of the Relay</h3>
-      </div>
-      <div class="row">
-      </div>
-      <div class="row border bg-light">
-        <div class="col">Time Slot</div>
-        <div class="col">Streamer</div>
-      </div>
-        {% for slot, streamer, spann in timeslots %}
-{#      <div class="row border {% if slot < now < slot + timedelta(hours=spann) %}bg-success{% elif slot > now %}bg-light{% elif slot < now %}bg-secondary{% endif %}">#}
-      <div class="row border">
-        <div class="col">
-        <span id="timetable-slot" timeslot="{{ slot }}" name="timeslot" timespan="{{ spann }}">Started at {{ slot }}</span>
-        </div>
-        <div class="col"><a href="https://twitch.tv/{{ streamer }}">Twitch.tv/{{ streamer }}</a></div>
-      </div>
-        {% endfor %}
-    </div>
+    <hr>
     <br>
     <div class="container text-center">
         <div class="row">
             <div class="col">
                 <h3>About The Relay of Regret:</h3>
-                <p>The Relay of Regret is a relay Stream-A-Thon that jumps from community to community to help raise money for charity.<br>
-                    Started in 2021, the goal is to raise as much money as possible for good and bring communities together for an amazing week of content and fun.<br>
-                    Last Year, we raised over £10,000 for 2 charities.<br><br>
-                    This year, we're going <b>bigger</b>.<br>
+                <p>The Relay of Regret is a relay Stream-A-Thon that jumps from community-to-community to help raise money for charity.<br>
+                    Started in 2021, the goal is to raise as much money as possible for good and bring communities together for an amazing week of content and fun.<br><br>
+                </p>
+                <p>
+                    In 2021, we raised over <b>£10,000</b> for <u>2</u> charities.<br>
+                    In <a href="/2022">2022</a> we raised <b>$42,294.93</b> across the <u>8</u> charities we supported!<br><br>
+                    Like last year, this year, we're going <b>bigger</b>.<br>
                     We're going <b>harder</b>.<br>
-                    We're pushing for more as well. More communities. More charities. More variety.<br><br>
-                    It's going to be a long week.<br><br>
+                    Two teams, 15 streamers each, competing head-to-head to see who can raise the most!<br><br>
+                    Grab your snacks and buckle up. It's going to be a long week.<br><br>
+                </p>
+                <p>
                     You can donate to any charity at any time, but each day you will see a FEATURED charity that we will be promoting.<br>
                     Allowing you to back the charities you care about most, while also giving each charity their own time to shine.<br>
-                    All the money goes direct to the charities via Tiltify or Extra Life. We do not see a penny.<br>
+                    All the money goes direct to the charities via Tiltify. We do not see a penny.<br>
                     We do not even touch the finances in any regard, we are a team using the fundraising websites to get the charities the money they need.<br>
-                </p>
-                    <br>
-                <h5><u>Who are the Relayers?</u></h5><br>
-                <p>
-                    BardicRJ, WoodyWoodpie, SledgeLP, MerleKoz, Moss, FeatheredFlint, HeartWood, Wishdream, Tygre, Silvixen, MegasArts, LeonFoxy, Nanukk, Kaideart, NateyBeak
-                    <br><br>
-                    There are a lot more taking part in raising money but these are the streamers involved in the Relay itself.
                 </p>
             </div>
         </div>
     </div>
-
     <br><br>
     <div class="container-fluid text-center">
       <div class="row">
@@ -126,6 +63,7 @@
     </div>
 
     <script>
+        // TODO move all this into a js file
         function ordinal_suffix_of(i) {
             var j = i % 10,
             k = i % 100;
@@ -163,6 +101,12 @@
       for (let e=0; slots[e]; e++) {
           slots[e].innerText = getTimeSlot(slots[e].getAttribute("timeslot"), slots[e].getAttribute("timespan"));
       }
+      // End
+
+      //
+        const kickoff = document.getElementById("kickoff")
+        kickoff.innerText = getFormattedDateString(new Date(kickoff.innerText))
+
     </script>
   </body>
 </html>
