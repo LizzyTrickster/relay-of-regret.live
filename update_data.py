@@ -31,4 +31,4 @@ for entry in r.get(f"{burl}/teams/e32acae9-cf04-459a-8577-be8df38efa37/team_camp
   charity_data[ entry['id'] ] =  entry['amount_raised']
 
 
-res = r.post("http://127.0.0.1:5000/update", json=dict(charity_data=charity_data, total=all_total_amount_raised))
+res = r.post("http://127.0.0.1:8000/update", json=dict(charity_data=charity_data, total=all_total_amount_raised))

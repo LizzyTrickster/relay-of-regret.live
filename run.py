@@ -100,7 +100,7 @@ charity_list = [
 
 
 @app.route("/")
-async def hello():
+def hello():
 
     timeslots = [
             (start_date, ("BardicRJ", "ItsMapleDoe"), 12),  # Friday PM
