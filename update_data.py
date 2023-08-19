@@ -37,6 +37,7 @@ print(res.status_code)
 donation_data = dict()
 
 for IID in charity_data.keys():
+    print(IID)
     donation_data[IID] = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=100").json()
 
 
