@@ -132,12 +132,9 @@ def hello():
             current_charity = charity
             break
     grand_total = lifetime_data['grand_total']
-    page = render_template("index.html", charities=charity_list, timeslots=timeslots, now=now(), timedelta=timedelta,
+    return render_template("index.html", charities=charity_list, timeslots=timeslots, now=now(), timedelta=timedelta,
                            current_streamer=current_streamers, current_charity=current_charity, grand_total=grand_total)
-    resp = make_response(page)
-    resp.headers.set("Cache-Control", "s-maxage=60")
-    return resp
-
+    
 
 @app.route("/donations")
 def donations_view():
@@ -152,10 +149,7 @@ def donations_view():
     dd = dict()
     # for campaign, data in donation_data.items():
     #     dd[campaign] = dict(data=[dono for dono in data['data'] if datetime.strptime(dono['completed_at'], "%Y-%m-%dT%H:%M:%SZ") ])
-    page = render_template("donations.html", donation_data=donation_data, campaigns=campaigns, currency_map=currency_map)
-    resp = make_response(page)
-    resp.headers.set("Cache-Control", "s-maxage=60")
-    return resp
+    return render_template("donations.html", donation_data=donation_data, campaigns=campaigns, currency_map=currency_map)
 
 
 @app.route("/updatedonations", methods=["POST"])
