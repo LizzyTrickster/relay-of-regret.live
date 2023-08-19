@@ -1,56 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <title>Relay of Regret - 2023</title>
-  </head>
-  <body>
-    <div class="container text-center">
-      <div class="row">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script type="application/javascript" src="{{ url_for('static', filename='code.js') }}"></script>
+    <title>Relay of Regret</title>
+</head>
+<body>
+<div class="container text-center">
+    <div class="row">
         <div class="col">
-          <h1>Relay of Regret 2023</h1>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="container-fluid text-center">
-        <div class="row">
-            <h2>We're at it again!<br><span id="kickoff">Friday August 18 2023 17:00:00 GMT+0000</span></h2>
-            <br>
-            <h3>Set your clocks!</h3>
+            <h1>Relay of Regret 2</h1>
         </div>
     </div>
-    <br>
-    <hr>
-    <br>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <h3>About The Relay of Regret:</h3>
-                <p>The Relay of Regret is a relay Stream-A-Thon that jumps from community-to-community to help raise money for charity.<br>
-                    Started in 2021, the goal is to raise as much money as possible for good and bring communities together for an amazing week of content and fun.<br><br>
-                </p>
-                <p>
-                    In 2021, we raised over <b>£10,000</b> for <u>2</u> charities.<br>
-                    In <a href="/2022">2022</a> we raised <b>$42,294.93</b> across the <u>8</u> charities we supported!<br><br>
-                    Like last year, this year, we're going <b>bigger</b>.<br>
-                    We're going <b>harder</b>.<br>
-                    Two teams, 15 streamers each, competing head-to-head to see who can raise the most!<br><br>
-                    Grab your snacks and buckle up. It's going to be a long week.<br><br>
-                </p>
-                <p>
-                    You can donate to any charity at any time, but each day you will see a FEATURED charity that we will be promoting.<br>
-                    Allowing you to back the charities you care about most, while also giving each charity their own time to shine.<br>
-                    All the money goes direct to the charities via Tiltify. We do not see a penny.<br>
-                    We do not even touch the finances in any regard, we are a team using the fundraising websites to get the charities the money they need.<br>
-                </p>
-            </div>
+</div>
+<br>
+<div class="container-fluid text-center">
+    <div class="row">
+        <h2>Today's featured charity</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% if current_charity %}
+                <img alt="{{ current_charity.url }}" src="{{ url_for('static', filename=current_charity.img) }}" width="400px">
+                <br>
+                <a href="/{{ current_charity.url }}/wd">Team Wild Dogs campaign</a>
+                <a href="/{{ current_charity.url }}/an">Team Antlers campaign</a>
+                <a href="/{{ current_charity.url }}/ou">Outlanders campaign</a>
+            {% else %}
+                The relay has not yet begun or is over
+            {% endif %}
         </div>
     </div>
-    <br><br>
-    <div class="container-fluid text-center">
-      <div class="row">
+</div>
+<br>
+<div class="container-fluid text-center">
+    <div class="row">
+        <h4>Current relay runners: <br>
+            {% if current_streamer %}
+                <a href="https://twitch.tv/{{ current_streamer[0] }}">{{ current_streamer[0] }}</a>
+                <a href="https://twitch.tv/{{ current_streamer[1] }}">{{ current_streamer[1] }}</a>
+            {% else %}
+                <p>The relay has not yet begun or is over</p>
+            {% endif %}
+        </h4>
+    </div>
+{#    <div class="row">#}
+{#        <div class="col">#}
+{#            <iframe src="https://player.twitch.tv/?channel={{ current_streamer }}&parent=relay-of-regret.live&autoplay=true&muted=true"#}
+{#                    height="360" width="640"></iframe>#}
+{#        </div>#}
+{#    </div>#}
+</div>
+<br>
+<div class="container-fluid text-center">
+    <div class="row">
+        <h4>Total raised for all charities<br>${{ grand_total }}</h4>
+    </div>
+</div>
+<br>
+<div class="container text-center">
+    <div class="row">
+        <h3>The other charities we're supporting this week!</h3>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Charity</th>
+            <th scope="col">Wild Dogs Raised</th>
+            <th scope="col">Antlers Raised</th>
+            <th scope="col">Outlanders Raised</th>
+            <th scope="col">Total Raised</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for charity in charities %}
+        <tr class="table-light">
+            <td><img alt="{{ charity.name }}" src="{{ url_for('static', filename=charity.img) }}" height="130px"></td>
+            <td>
+                {{ charity.currency }}{{ charity.wilddogs_campaign.total_raised }}<br>
+                <a href="{{ charity.url }}/wd">donate here</a>
+            </td>
+            <td>
+                {{ charity.currency }}{{ charity.antlers_campaign.total_raised }}<br>
+                <a href="{{ charity.url }}/an">donate here</a>
+            </td>
+            <td>
+                {{ charity.currency }}{{ charity.outlanders_campaign.total_raised }}<br>
+                <a href="{{ charity.url }}/ou">donate here</a>
+            </td>
+            <td>{{ charity.currency }}{{ charity.total_raised() }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{#    <div class="row row-cols-lg-4 row-cols-md-2 gx-2">#}
+{#        {% for charity in charities %}#}
+{#            <div class="col p-1 px-1">#}
+{#                <a href="/{{ charity.url }}">#}
+{#                    <img src="{{ url_for('static', filename=charity.img) }}" width="320px">#}
+{#                </a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+</div>
+<br>
+<div class="container text-center">
+    <div class="row">
+        <h3>Relay schedule</h3>
+    </div>
+    <table class="table table-secondary">
+        <thead>
+        <tr>
+            <th scope="col">Team Wild Dogs</th>
+            <th scope="col">Time Slot</th>
+            <th scope="col">Team Antlers</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for slot, streamer_pair, spann in timeslots %}
+            <tr class="{% if slot < now < slot + timedelta(hours=spann) %}table-success{% elif slot > now %}table-light{% elif slot < now %}table-secondary{% endif %}">
+                <td><a href="https://twitch.tv/{{ streamer_pair[0] }}">Twitch.tv/{{ streamer_pair[0] }}</a></td>
+                <td><span id="timetable-slot" timeslot="{{ slot }}" name="timeslot"
+                          timespan="{{ spann }}">Starts at {{ slot }}</span></td>
+                <td><a href="https://twitch.tv/{{ streamer_pair[1] }}">Twitch.tv/{{ streamer_pair[1] }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br>
+<hr>
+<br>
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <h3>About The Relay of Regret:</h3>
+            <p>The Relay of Regret is a relay Stream-A-Thon that jumps from community-to-community to help raise money
+                for charity.<br>
+                Started in 2021, the goal is to raise as much money as possible for good and bring communities together
+                for an amazing week of content and fun.<br><br>
+            </p>
+            <p>
+                In 2021, we raised over <b>£10,000</b> for <u>2</u> charities.<br>
+                In <a href="/2022">2022</a> we raised <b>$42,294.93</b> across the <u>8</u> charities we
+                supported!<br><br>
+                Like last year, this year, we're going <b>bigger</b>.<br>
+                We're going <b>harder</b>.<br>
+                Two teams, 15 streamers each, competing head-to-head to see who can raise the most!<br><br>
+                Grab your snacks and buckle up. It's going to be a long week.<br><br>
+            </p>
+            <p>
+                You can donate to any charity at any time, but each day you will see a FEATURED charity that we will be
+                promoting.<br>
+                Allowing you to back the charities you care about most, while also giving each charity their own time to
+                shine.<br>
+                All the money goes direct to the charities via Tiltify. We do not see a penny.<br>
+                We do not even touch the finances in any regard, we are a team using the fundraising websites to get the
+                charities the money they need.<br>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="container-fluid text-center">
+    <div class="row">
         <div class="col">
             <hr>
             <p>
@@ -59,54 +173,31 @@
                     <a href="https://github.com/LizzyTrickster/relay-of-regret.live">How it's made</a></sub>
             </p>
         </div>
-      </div>
     </div>
+</div>
 
-    <script>
-        // TODO move all this into a js file
-        function ordinal_suffix_of(i) {
-            var j = i % 10,
-            k = i % 100;
-            if (j == 1 && k != 11) {
-                return i + "st";
-            }
-            if (j == 2 && k != 12) {
-                return i + "nd";
-            }
-            if (j == 3 && k != 13) {
-                return i + "rd";
-            }
-            return i + "th";
-        }
+<script>
+    const d = new Date("{{ now }}");
+    document.getElementById("gentime").innerHTML = d.toString();
 
-      function pad(x){ if(x < 10) return "0"+x; return x;}
-      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-        const months = ["Jan", "Feb", "Mar", "April", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-      const d = new Date("{{ now }}");
-      document.getElementById("gentime").innerHTML = d.toString();
-
-      function getFormattedDateString(date) {
-          var day_and_month = ordinal_suffix_of(date.getDate())+" "+months[date.getMonth()]+" "+date.getFullYear()
-        return days[date.getDay()] + ' ('+day_and_month+') ' + pad(date.getHours()) + ':' + pad(date.getMinutes());
-      }
-      function getTimeSlot(start_time, timeframe){
+    function getTimeSlot(start_time, timeframe) {
         var date = new Date(start_time);
         var f = getFormattedDateString(date);
-        date.setHours(parseInt(date.getHours())+parseInt(timeframe));
+        date.setHours(parseInt(date.getHours()) + parseInt(timeframe));
         var s = getFormattedDateString(date);
         return f + " - " + s;
-      }
+    }
 
-      const slots = document.getElementsByName("timeslot");
-      for (let e=0; slots[e]; e++) {
-          slots[e].innerText = getTimeSlot(slots[e].getAttribute("timeslot"), slots[e].getAttribute("timespan"));
-      }
-      // End
+    const slots = document.getElementsByName("timeslot");
+    for (let e = 0; slots[e]; e++) {
+        slots[e].innerText = getTimeSlot(slots[e].getAttribute("timeslot"), slots[e].getAttribute("timespan"));
+    }
+    // End
 
-      //
-        const kickoff = document.getElementById("kickoff")
-        kickoff.innerText = getFormattedDateString(new Date(kickoff.innerText))
+    //
+    const kickoff = document.getElementById("kickoff")
+    kickoff.innerText = getFormattedDateString(new Date(kickoff.innerText))
 
-    </script>
-  </body>
+</script>
+</body>
 </html>
