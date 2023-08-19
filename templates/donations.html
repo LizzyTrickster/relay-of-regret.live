@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script type="application/javascript" src="{{ url_for('static', filename='code.js') }}"></script>
+    <title>Relay of Regret</title>
+</head>
+
+<body>
+<div class="container-fluid text-center">
+    <h1>Donations</h1>
+</div>
+<br><br>
+
+{% for campaign in campaigns %}
+<div class="container-fluid text-center">
+    <div class="row">
+        <h2>{{ campaigns[campaign] }}</h2>
+    </div>
+    <div class="row">
+    {% if campaign in donation_data %}
+        {% for donation in donation_data[campaign]['data'] %}
+            <p>
+                Donation made by <b>{{ donation['donor_name'] }}</b> at
+                <span name="dono_completed" date="{{ donation['completed_at'] }}">{{ donation['completed_at'] }}</span>
+                for {{ currency_map[donation['amount']['currency']] }}{{ donation['amount']['value'] }}.<br>
+                {% if donation['donor_comment']!=None %}Donor comment: <i>{{ donation['donor_comment'] }}</i>{% endif %}
+            </p>
+        {% endfor %}
+    {% endif %}
+    </div>
+<hr>
+</div>
+{% endfor %}
+
+<script>
+    const donos = document.getElementsByName("dono_completed");
+    for (let e = 0; donos[e]; e++) {
+        donos[e].innerText = getFormattedDateString( new Date(donos[e].getAttribute("date")) );
+    }
+</script>
+</body>
+</html>

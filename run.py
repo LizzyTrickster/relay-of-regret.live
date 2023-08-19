@@ -3,7 +3,7 @@ import functools
 import json, datetime
 from collections import namedtuple
 from dataclasses import dataclass
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, make_response
 from flask_frozen import Freezer
 from celery import Celery, Task
 from datetime import datetime, timezone, timedelta
@@ -97,6 +97,7 @@ charity_list = [
             currency=currency_map['CAD']
             )
 ]
+donation_data = dict()
 
 
 @app.route("/")
@@ -131,8 +132,41 @@ def hello():
             current_charity = charity
             break
     grand_total = lifetime_data['grand_total']
-    return render_template("index.html", charities=charity_list, timeslots=timeslots, now=now(), timedelta=timedelta,
+    page = render_template("index.html", charities=charity_list, timeslots=timeslots, now=now(), timedelta=timedelta,
                            current_streamer=current_streamers, current_charity=current_charity, grand_total=grand_total)
+    resp = make_response(page)
+    resp.headers.set("Cache-Control", "s-maxage=60")
+    return resp
+
+
+@app.route("/donations")
+def donations_view():
+    args = request.args
+    timeslot: int = args.get("now", default=False, type=bool)
+    print(timeslot)
+    campaigns = dict()
+    for charity in charity_list:
+        campaigns[charity.antlers_campaign.id] = f"{charity.name} - Antlers"
+        campaigns[charity.wilddogs_campaign.id] = f"{charity.name} - Wild Dogs"
+        campaigns[charity.outlanders_campaign.id] = f"{charity.name} - Outlanders"
+    dd = dict()
+    # for campaign, data in donation_data.items():
+    #     dd[campaign] = dict(data=[dono for dono in data['data'] if datetime.strptime(dono['completed_at'], "%Y-%m-%dT%H:%M:%SZ") ])
+    page = render_template("donations.html", donation_data=donation_data, campaigns=campaigns, currency_map=currency_map)
+    resp = make_response(page)
+    resp.headers.set("Cache-Control", "s-maxage=60")
+    return resp
+
+
+@app.route("/updatedonations", methods=["POST"])
+def update_donations():
+    data = request.get_json()
+    for campaign, donations in data.items():
+        donation_data[campaign] = dict(data=sorted(donations['data'], key=lambda dono: dono['completed_at']),
+                                       metadata=donations['metadata']
+                                       )
+    donation_data.update(data)
+    return Response(status=204)
 
 
 @app.route("/update", methods=["POST"])
