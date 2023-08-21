@@ -113,7 +113,7 @@ def hello():
             (start_date + timedelta(days=3), ("vrcvictory", "Wulf97"), 12),  # Monday PM
             (start_date + timedelta(days=3.5), ("Wishdream", "BlueBoxey"), 12),  # Tuesday AM
             (start_date + timedelta(days=4), ("SnoweyVR", "Heartwood"), 12),  # Tuesday PM
-            (start_date + timedelta(days=4.5), ("sammifawkes", "undertheredmoon"), 12),  # Wednesday AM
+            (start_date + timedelta(days=4.5), ("sammifawkes", "kajiru"), 12),  # Wednesday AM
             (start_date + timedelta(days=5), ("neon_woof", "electrowuff"), 12),  # Wednesday PM
             (start_date + timedelta(days=5.5), ("megaacat", "merlekoz"), 12),  # Thursday AM
             (start_date + timedelta(days=6), ("dutchwolffe", "anubian_nomad"), 12),  # Thursday PM
