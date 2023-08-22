@@ -33,7 +33,7 @@ class Charity:
 
     def total_raised(self) -> float:
         total =  self.wilddogs_campaign.total_raised + self.antlers_campaign.total_raised + self.outlanders_campaign.total_raised
-        return total
+        return round(total,2)
 
 currency_map = dict(USD="US$", EUR="€", GBP="£", AUD="AU$", CAD="CA$")
 
