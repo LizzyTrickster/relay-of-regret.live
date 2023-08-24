@@ -31,8 +31,8 @@ for entry in r.get(f"{burl}/teams/e32acae9-cf04-459a-8577-be8df38efa37/team_camp
   charity_data[ entry['id'] ] =  entry['amount_raised']
 
 
-res = r.post("http://127.0.0.1:8000/update", json=dict(charity_data=charity_data, total=all_total_amount_raised))
-print(res.status_code)
+# res = r.post("http://127.0.0.1:8000/update", json=dict(charity_data=charity_data, total=all_total_amount_raised))
+# print(res.status_code)
 
 donation_data = dict()
 
@@ -41,5 +41,7 @@ for IID in charity_data.keys():
     donation_data[IID] = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=100").json()
 
 
-dono_res = r.post("http://127.0.0.1:8000/updatedonations", json=donation_data)
+dono_res = r.post("http://127.0.0.1:8000/update", json=dict(donation_data=donation_data,
+                                                            charity_data=charity_data,
+                                                            total=all_total_amount_raised))
 print(dono_res.status_code)

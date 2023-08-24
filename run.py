@@ -11,6 +11,8 @@ import random
 
 app = Flask(__name__)
 
+app.config["FREEZER_RELATIVE_URLS"] = True
+freezer = Freezer(app)
 
 @dataclass
 class Campaign:
@@ -32,7 +34,7 @@ class Charity:
     currency: str = "US$"
 
     def total_raised(self) -> float:
-        total =  self.wilddogs_campaign.total_raised + self.antlers_campaign.total_raised + self.outlanders_campaign.total_raised
+        total = self.wilddogs_campaign.total_raised + self.antlers_campaign.total_raised + self.outlanders_campaign.total_raised
         return round(total,2)
 
 currency_map = dict(USD="US$", EUR="€", GBP="£", AUD="AU$", CAD="CA$")
@@ -117,7 +119,7 @@ def hello():
             (start_date + timedelta(days=5), ("neon_woof", "electrowuff"), 12),  # Wednesday PM
             (start_date + timedelta(days=5.5), ("Megaa", "merlekoz"), 12),  # Thursday AM
             (start_date + timedelta(days=6), ("dutchwolffe", "anubian_nomad"), 12),  # Thursday PM
-            (start_date + timedelta(days=6.5), ("Zuka", "CorgiCraft"), 12),  # Friday AM
+            (start_date + timedelta(days=6.5), ("Zuka", "codylycan"), 12),  # Friday AM
             (start_date + timedelta(days=7), ("aydanfox", "luiroilefuret"), 12),  # Friday PM
             (start_date + timedelta(days=7.5), ("BardicRJ", "ItsMapleDoe"), 12),  # Saturday AM (FINALE)
         ]
@@ -134,13 +136,10 @@ def hello():
     grand_total = lifetime_data['grand_total']
     return render_template("index.html", charities=charity_list, timeslots=timeslots, now=now(), timedelta=timedelta,
                            current_streamer=current_streamers, current_charity=current_charity, grand_total=grand_total)
-    
 
-@app.route("/donations")
+
+@app.route("/donations/")
 def donations_view():
-    args = request.args
-    timeslot: int = args.get("now", default=False, type=bool)
-    print(timeslot)
     campaigns = dict()
     for charity in charity_list:
         campaigns[charity.antlers_campaign.id] = f"{charity.name} - Antlers"
@@ -150,17 +149,6 @@ def donations_view():
     # for campaign, data in donation_data.items():
     #     dd[campaign] = dict(data=[dono for dono in data['data'] if datetime.strptime(dono['completed_at'], "%Y-%m-%dT%H:%M:%SZ") ])
     return render_template("donations.html", donation_data=donation_data, campaigns=campaigns, currency_map=currency_map)
-
-
-@app.route("/updatedonations", methods=["POST"])
-def update_donations():
-    data = request.get_json()
-    for campaign, donations in data.items():
-        donation_data[campaign] = dict(data=sorted(donations['data'], key=lambda dono: dono['completed_at']),
-                                       metadata=donations['metadata']
-                                       )
-    donation_data.update(data)
-    return Response(status=204)
 
 
 @app.route("/update", methods=["POST"])
@@ -178,6 +166,11 @@ def update():
             if charity.outlanders_campaign.id == campaign_id:
                 charity.outlanders_campaign.total_raised = float(campaign_data['value'])
                 break
+
+    for campaign, donations in data['donation_data'].items():
+        donation_data[campaign] = dict(data=sorted(donations['data'], key=lambda dono: dono['completed_at']),
+                                       metadata=donations['metadata'])
+    freezer.freeze()
     return Response(status=204)
     pass
 
@@ -197,10 +190,6 @@ async def refresh_tiltify_token():
 #     )
 #     return Response(json.dumps(response), status=200, mimetype="application/json")
 
-
-app.config["FREEZER_RELATIVE_URLS"] = True
-
-freezer = Freezer(app)
 
 # celery_app = celery_init_app(app)
 
