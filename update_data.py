@@ -3,6 +3,7 @@
 import os
 import sys
 from typing import Optional
+import json
 
 import requests
 from datetime import datetime, timedelta
@@ -51,5 +52,8 @@ for IID in charity_data.keys():
         else:
             after = resp.json()['metadata']['after']
 
-dono_res = r.post("http://127.0.0.1:8000/update", json=dict(donation_data=donation_data, charity_data=charity_data, total=all_total_amount_raised))
-print(dono_res.status_code)
+data_to_send = dict(donation_data=donation_data, charity_data=charity_data, total=all_total_amount_raised)
+with open("data.json", "w") as f:
+    f.write(json.dumps(data_to_send, sort_keys=True, indent=2))
+update_response = r.post("http://127.0.0.1:8000/update", json=data_to_send)
+print(update_response.status_code)
