@@ -38,7 +38,7 @@ donation_data = dict()
 
 for IID in charity_data.keys():
     print(IID)
-    donation_data[IID] = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=1000").json()
+    donation_data[IID] = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=100").json()
 
 
 dono_res = r.post("http://127.0.0.1:8000/update", json=dict(donation_data=donation_data,
