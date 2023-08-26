@@ -168,8 +168,7 @@ def update():
                 break
 
     for campaign, donations in data['donation_data'].items():
-        donation_data[campaign] = dict(data=sorted(donations['data'], key=lambda dono: dono['completed_at']),
-                                       metadata=donations['metadata'])
+        donation_data[campaign] = dict(data=sorted(donations, key=lambda dono: dono['completed_at']))
     freezer.freeze()
     return Response(status=204)
     pass

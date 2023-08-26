@@ -28,7 +28,7 @@ all_total_amount_raised = RR.json()['data']['total_amount_raised']
 charity_data = dict()
 
 for entry in r.get(f"{burl}/teams/e32acae9-cf04-459a-8577-be8df38efa37/team_campaigns?limit=50").json()['data']:
-  charity_data[ entry['id'] ] =  entry['amount_raised']
+    charity_data[entry['id']] = entry['amount_raised']
 
 
 # res = r.post("http://127.0.0.1:8000/update", json=dict(charity_data=charity_data, total=all_total_amount_raised))
@@ -38,10 +38,17 @@ donation_data = dict()
 
 for IID in charity_data.keys():
     print(IID)
-    donation_data[IID] = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=100").json()
+    donation_data[IID] = list()
+    after: str | None = None
+    itera = 0
+    while True:
+        itera += 1
+        resp = r.get(f"{burl}/team_campaigns/{IID}/donations?limit=100{'&after='+after if after else ''}")
+        [donation_data[IID].append(item) for item in resp.json()['data']]
+        if resp.json()['metadata']['after'] is None:
+            break
+        else:
+            after = resp.json()['metadata']['after']
 
-
-dono_res = r.post("http://127.0.0.1:8000/update", json=dict(donation_data=donation_data,
-                                                            charity_data=charity_data,
-                                                            total=all_total_amount_raised))
+dono_res = r.post("http://127.0.0.1:8000/update", json=dict(donation_data=donation_data, charity_data=charity_data, total=all_total_amount_raised))
 print(dono_res.status_code)
