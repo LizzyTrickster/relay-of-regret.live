@@ -18,35 +18,46 @@
 <br>
 <div class="container-fluid text-center">
     <div class="row">
-        <h2>Today's featured charity</h2>
-    </div>
-    <div class="row">
-        <div class="col">
-            {% if current_charity %}
-                <img alt="{{ current_charity.url }}" src="{{ url_for('static', filename=current_charity.img) }}" width="400px">
-                <br>
-                <a href="/{{ current_charity.url }}/wd">Team Wild Dogs campaign</a>
-                <a href="/{{ current_charity.url }}/an">Team Antlers campaign</a>
-                <a href="/{{ current_charity.url }}/ou">Outlanders campaign</a>
-            {% else %}
-                The relay has not yet begun or is over
-            {% endif %}
-        </div>
+        <h2>The Relay of Regret 3 has now concluded!</h2><br>
+        <p>
+            What a phenomenal week that was. In total, <b>US$60312.93</b> was raised across the 7 charities.<br>
+            Thank you to everyone who donated throughout the relay across the various charities and teams.<br><br>
+            We'll be back at it again in April next year (2024).
+        </p>
     </div>
 </div>
-<br>
-<div class="container-fluid text-center">
-    <div class="row">
-        <h4>Current relay runners: <br>
-            {% if current_streamer %}
-                <a href="https://twitch.tv/{{ current_streamer[0] }}">{{ current_streamer[0] }}</a>
-                <a href="https://twitch.tv/{{ current_streamer[1] }}">{{ current_streamer[1] }}</a>
-            {% else %}
-                <p>The relay has not yet begun or is over</p>
-            {% endif %}
-        </h4>
-    </div>
-</div>
+<hr>
+{#<div class="container-fluid text-center">#}
+{#    <div class="row">#}
+{#        <h2>Today's featured charity</h2>#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        <div class="col">#}
+{#            {% if current_charity %}#}
+{#                <img alt="{{ current_charity.url }}" src="{{ url_for('static', filename=current_charity.img) }}" width="400px">#}
+{#                <br>#}
+{#                <a href="/{{ current_charity.url }}/wd">Team Wild Dogs campaign</a>#}
+{#                <a href="/{{ current_charity.url }}/an">Team Antlers campaign</a>#}
+{#                <a href="/{{ current_charity.url }}/ou">Outlanders campaign</a>#}
+{#            {% else %}#}
+{#                The relay has not yet begun or is over#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#<br>#}
+{#<div class="container-fluid text-center">#}
+{#    <div class="row">#}
+{#        <h4>Current relay runners: <br>#}
+{#            {% if current_streamer %}#}
+{#                <a href="https://twitch.tv/{{ current_streamer[0] }}">{{ current_streamer[0] }}</a>#}
+{#                <a href="https://twitch.tv/{{ current_streamer[1] }}">{{ current_streamer[1] }}</a>#}
+{#            {% else %}#}
+{#                <p>The relay has not yet begun or is over</p>#}
+{#            {% endif %}#}
+{#        </h4>#}
+{#    </div>#}
+{#</div>#}
 <br>
 <div class="container-fluid text-center">
     <div class="row">
@@ -74,15 +85,15 @@
             <td><img alt="{{ charity.name }}" src="{{ url_for('static', filename=charity.img) }}" height="130px"></td>
             <td>
                 {{ charity.currency }}{{ charity.wilddogs_campaign.total_raised }}<br>
-                <a href="{{ charity.url }}/wd">donate here</a>
+{#                <a href="{{ charity.url }}/wd">donate here</a>#}
             </td>
             <td>
                 {{ charity.currency }}{{ charity.antlers_campaign.total_raised }}<br>
-                <a href="{{ charity.url }}/an">donate here</a>
+{#                <a href="{{ charity.url }}/an">donate here</a>#}
             </td>
             <td>
                 {{ charity.currency }}{{ charity.outlanders_campaign.total_raised }}<br>
-                <a href="{{ charity.url }}/ou">donate here</a>
+{#                <a href="{{ charity.url }}/ou">donate here</a>#}
             </td>
             <td>{{ charity.currency }}{{ charity.total_raised() }}</td>
         </tr>
