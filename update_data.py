@@ -2,6 +2,7 @@
 # Copyright Lizzy Trickster (Lizzy Green)
 import os
 import sys
+from typing import Optional
 
 import requests
 from datetime import datetime, timedelta
@@ -39,7 +40,7 @@ donation_data = dict()
 for IID in charity_data.keys():
     print(IID)
     donation_data[IID] = list()
-    after: str | None = None
+    after: Optional[str] = None
     itera = 0
     while True:
         itera += 1
